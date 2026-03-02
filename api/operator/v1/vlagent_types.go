@@ -91,9 +91,8 @@ type VLAgentSpec struct {
 	// +optional
 	ServiceAccountName string `json:"serviceAccountName,omitempty"`
 
-	*vmv1beta1.EmbeddedProbes                   `json:",inline"`
-	vmv1beta1.CommonDefaultableParams           `json:",inline,omitempty"`
-	vmv1beta1.CommonApplicationDeploymentParams `json:",inline,omitempty"`
+	*vmv1beta1.EmbeddedProbes  `json:",inline"`
+	vmv1beta1.CommonAppsParams `json:",inline,omitempty"`
 }
 
 type VLAgentK8sCollector struct {

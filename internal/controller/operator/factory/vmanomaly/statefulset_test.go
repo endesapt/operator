@@ -56,7 +56,7 @@ func TestCreateOrUpdate(t *testing.T) {
 				Labels:      map[string]string{"main": "system"},
 			},
 			Spec: vmv1.VMAnomalySpec{
-				CommonApplicationDeploymentParams: vmv1beta1.CommonApplicationDeploymentParams{
+				CommonAppsParams: vmv1beta1.CommonAppsParams{
 					ReplicaCount: ptr.To(int32(1)),
 				},
 				License: &vmv1beta1.License{
@@ -121,7 +121,7 @@ schedulers:
 				Labels:      map[string]string{"main": "system"},
 			},
 			Spec: vmv1.VMAnomalySpec{
-				CommonApplicationDeploymentParams: vmv1beta1.CommonApplicationDeploymentParams{
+				CommonAppsParams: vmv1beta1.CommonAppsParams{
 					ReplicaCount: ptr.To(int32(1)),
 				},
 				License: &vmv1beta1.License{
@@ -178,7 +178,7 @@ schedulers:
 				Labels:      map[string]string{"main": "system"},
 			},
 			Spec: vmv1.VMAnomalySpec{
-				CommonApplicationDeploymentParams: vmv1beta1.CommonApplicationDeploymentParams{
+				CommonAppsParams: vmv1beta1.CommonAppsParams{
 					ReplicaCount: ptr.To(int32(1)),
 				},
 				License: &vmv1beta1.License{

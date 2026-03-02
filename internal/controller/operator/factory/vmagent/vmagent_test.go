@@ -62,11 +62,10 @@ func TestCreateOrUpdate(t *testing.T) {
 				RemoteWrite: []vmv1beta1.VMAgentRemoteWriteSpec{
 					{URL: "http://remote-write"},
 				},
-				CommonApplicationDeploymentParams: vmv1beta1.CommonApplicationDeploymentParams{
+				CommonAppsParams: vmv1beta1.CommonAppsParams{
 					ReplicaCount: ptr.To(int32(1)),
 				},
-				CommonDefaultableParams: vmv1beta1.CommonDefaultableParams{},
-				StatefulMode:            true,
+				StatefulMode: true,
 				CommonScrapeParams: vmv1beta1.CommonScrapeParams{
 					IngestOnlyMode: ptr.To(true),
 				},
@@ -129,7 +128,7 @@ func TestCreateOrUpdate(t *testing.T) {
 				Namespace: "default",
 			},
 			Spec: vmv1beta1.VMAgentSpec{
-				CommonApplicationDeploymentParams: vmv1beta1.CommonApplicationDeploymentParams{
+				CommonAppsParams: vmv1beta1.CommonAppsParams{
 					ReplicaCount: ptr.To(int32(1)),
 				},
 				RemoteWrite: []vmv1beta1.VMAgentRemoteWriteSpec{
@@ -414,7 +413,7 @@ func TestCreateOrUpdate(t *testing.T) {
 				RemoteWrite: []vmv1beta1.VMAgentRemoteWriteSpec{
 					{URL: "http://remote-write"},
 				},
-				CommonApplicationDeploymentParams: vmv1beta1.CommonApplicationDeploymentParams{
+				CommonAppsParams: vmv1beta1.CommonAppsParams{
 					ReplicaCount: ptr.To(int32(1)),
 				},
 				StatefulMode: true,
@@ -453,7 +452,7 @@ func TestCreateOrUpdate(t *testing.T) {
 				CommonScrapeParams: vmv1beta1.CommonScrapeParams{
 					IngestOnlyMode: ptr.To(true),
 				},
-				CommonApplicationDeploymentParams: vmv1beta1.CommonApplicationDeploymentParams{
+				CommonAppsParams: vmv1beta1.CommonAppsParams{
 					ReplicaCount: ptr.To[int32](2),
 				},
 				ShardCount: ptr.To(3),
@@ -519,7 +518,7 @@ func TestCreateOrUpdate(t *testing.T) {
 				RemoteWrite: []vmv1beta1.VMAgentRemoteWriteSpec{
 					{URL: "http://remote-write"},
 				},
-				CommonApplicationDeploymentParams: vmv1beta1.CommonApplicationDeploymentParams{
+				CommonAppsParams: vmv1beta1.CommonAppsParams{
 					ReplicaCount: ptr.To(int32(1)),
 				},
 				StatefulMode: true,
@@ -582,7 +581,7 @@ func TestCreateOrUpdate(t *testing.T) {
 				Namespace: "default",
 			},
 			Spec: vmv1beta1.VMAgentSpec{
-				CommonApplicationDeploymentParams: vmv1beta1.CommonApplicationDeploymentParams{
+				CommonAppsParams: vmv1beta1.CommonAppsParams{
 					ReplicaCount: ptr.To(int32(0)),
 				},
 				StatefulMode: true,
@@ -2074,7 +2073,7 @@ func TestMakeSpecForAgentOk(t *testing.T) {
 				CommonScrapeParams: vmv1beta1.CommonScrapeParams{
 					IngestOnlyMode: ptr.To(true),
 				},
-				CommonDefaultableParams: vmv1beta1.CommonDefaultableParams{
+				CommonAppsParams: vmv1beta1.CommonAppsParams{
 					Image: vmv1beta1.Image{
 						Repository: "vm-repo",
 						Tag:        "v1.97.1",
@@ -2106,7 +2105,7 @@ containers:
     - name: vmagent
       image: vm-repo:v1.97.1
       args:
-        - -http.shutdownDelay=30s
+        - -http.shutdownDelay=29s
         - -httpListenAddr=:8425
         - -remoteWrite.maxDiskUsagePerURL=1073741824
         - -remoteWrite.tmpDataPath=/tmp/vmagent-remotewrite-data
@@ -2163,7 +2162,7 @@ serviceaccountname: vmagent-agent
 				CommonScrapeParams: vmv1beta1.CommonScrapeParams{
 					IngestOnlyMode: ptr.To(false),
 				},
-				CommonDefaultableParams: vmv1beta1.CommonDefaultableParams{
+				CommonAppsParams: vmv1beta1.CommonAppsParams{
 					Image: vmv1beta1.Image{
 						Tag: "v1.97.1",
 					},
@@ -2208,7 +2207,7 @@ containers:
     - name: vmagent
       image: victoriametrics/vmagent:v1.97.1
       args:
-        - -http.shutdownDelay=30s
+        - -http.shutdownDelay=29s
         - -httpListenAddr=:8429
         - -promscrape.config=/etc/vmagent/config_out/vmagent.yaml
         - -remoteWrite.maxDiskUsagePerURL=1073741824
@@ -2305,7 +2304,7 @@ serviceaccountname: vmagent-agent
 				CommonScrapeParams: vmv1beta1.CommonScrapeParams{
 					IngestOnlyMode: ptr.To(true),
 				},
-				CommonDefaultableParams: vmv1beta1.CommonDefaultableParams{
+				CommonAppsParams: vmv1beta1.CommonAppsParams{
 					Image: vmv1beta1.Image{
 						Tag: "v1.97.1",
 					},
@@ -2340,7 +2339,7 @@ containers:
     - name: vmagent
       image: victoriametrics/vmagent:v1.97.1
       args:
-        - -http.shutdownDelay=30s
+        - -http.shutdownDelay=29s
         - -httpListenAddr=:8425
         - -remoteWrite.maxDiskUsagePerURL=10GB,10GB,1073741824
         - -remoteWrite.tmpDataPath=/tmp/vmagent-remotewrite-data
@@ -2389,7 +2388,7 @@ serviceaccountname: vmagent-agent
 				CommonScrapeParams: vmv1beta1.CommonScrapeParams{
 					IngestOnlyMode: ptr.To(true),
 				},
-				CommonDefaultableParams: vmv1beta1.CommonDefaultableParams{
+				CommonAppsParams: vmv1beta1.CommonAppsParams{
 					Image: vmv1beta1.Image{
 						Tag: "v1.97.1",
 					},
@@ -2427,7 +2426,7 @@ containers:
     - name: vmagent
       image: victoriametrics/vmagent:v1.97.1
       args:
-        - -http.shutdownDelay=30s
+        - -http.shutdownDelay=29s
         - -httpListenAddr=:8425
         - -remoteWrite.maxDiskUsagePerURL=10GB,20MB,10GB
         - -remoteWrite.tmpDataPath=/tmp/vmagent-remotewrite-data
@@ -2476,21 +2475,19 @@ serviceaccountname: vmagent-agent
 				CommonScrapeParams: vmv1beta1.CommonScrapeParams{
 					IngestOnlyMode: ptr.To(true),
 				},
-				CommonDefaultableParams: vmv1beta1.CommonDefaultableParams{
+				CommonAppsParams: vmv1beta1.CommonAppsParams{
 					Image: vmv1beta1.Image{
 						Tag: "v1.97.1",
 					},
 					UseDefaultResources: ptr.To(false),
 					Port:                "8425",
-				},
-				CommonConfigReloaderParams: vmv1beta1.CommonConfigReloaderParams{
-					ConfigReloaderImage: "vmcustom:config-reloader-v0.35.0",
-				},
-				CommonApplicationDeploymentParams: vmv1beta1.CommonApplicationDeploymentParams{
 					ExtraArgs: map[string]string{
 						"remoteWrite.maxDiskUsagePerURL": "35GiB",
 						"remoteWrite.forceVMProto":       "false",
 					},
+				},
+				CommonConfigReloaderParams: vmv1beta1.CommonConfigReloaderParams{
+					ConfigReloaderImage: "vmcustom:config-reloader-v0.35.0",
 				},
 				RemoteWrite: []vmv1beta1.VMAgentRemoteWriteSpec{
 					{
@@ -2521,7 +2518,7 @@ containers:
     - name: vmagent
       image: victoriametrics/vmagent:v1.97.1
       args:
-        - -http.shutdownDelay=30s
+        - -http.shutdownDelay=29s
         - -httpListenAddr=:8425
         - -remoteWrite.forceVMProto=false
         - -remoteWrite.maxDiskUsagePerURL=35GiB

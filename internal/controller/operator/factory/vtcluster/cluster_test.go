@@ -72,17 +72,17 @@ func TestCreateOrUpdate(t *testing.T) {
 			},
 			Spec: vmv1.VTClusterSpec{
 				Insert: &vmv1.VTInsert{
-					CommonApplicationDeploymentParams: vmv1beta1.CommonApplicationDeploymentParams{
+					CommonAppsParams: vmv1beta1.CommonAppsParams{
 						ReplicaCount: ptr.To(int32(2)),
 					},
 				},
 				Storage: &vmv1.VTStorage{
-					CommonApplicationDeploymentParams: vmv1beta1.CommonApplicationDeploymentParams{
+					CommonAppsParams: vmv1beta1.CommonAppsParams{
 						ReplicaCount: ptr.To(int32(2)),
 					},
 				},
 				Select: &vmv1.VTSelect{
-					CommonApplicationDeploymentParams: vmv1beta1.CommonApplicationDeploymentParams{
+					CommonAppsParams: vmv1beta1.CommonAppsParams{
 						ReplicaCount: ptr.To(int32(2)),
 					},
 				},
@@ -100,7 +100,7 @@ func TestCreateOrUpdate(t *testing.T) {
 			assert.Nil(t, rclient.Get(ctx, types.NamespacedName{Name: cr.PrefixedName(vmv1beta1.ClusterComponentInsert), Namespace: cr.Namespace}, &dep))
 			assert.Len(t, dep.Spec.Template.Spec.Containers, 1)
 			cnt := dep.Spec.Template.Spec.Containers[0]
-			assert.Equal(t, cnt.Args, []string{"-http.shutdownDelay=30s", "-httpListenAddr=:10481", "-internalselect.disable=true", "-storageNode=vtstorage-base-0.vtstorage-base.default:10491,vtstorage-base-1.vtstorage-base.default:10491"})
+			assert.Equal(t, cnt.Args, []string{"-http.shutdownDelay=29s", "-httpListenAddr=:10481", "-internalselect.disable=true", "-storageNode=vtstorage-base-0.vtstorage-base.default:10491,vtstorage-base-1.vtstorage-base.default:10491"})
 			assert.Nil(t, dep.Annotations)
 			assert.Equal(t, dep.Labels, cr.FinalLabels(vmv1beta1.ClusterComponentInsert))
 
@@ -108,7 +108,7 @@ func TestCreateOrUpdate(t *testing.T) {
 			assert.Nil(t, rclient.Get(ctx, types.NamespacedName{Name: cr.PrefixedName(vmv1beta1.ClusterComponentSelect), Namespace: cr.Namespace}, &dep))
 			assert.Len(t, dep.Spec.Template.Spec.Containers, 1)
 			cnt = dep.Spec.Template.Spec.Containers[0]
-			assert.Equal(t, cnt.Args, []string{"-http.shutdownDelay=30s", "-httpListenAddr=:10471", "-internalinsert.disable=true", "-storageNode=vtstorage-base-0.vtstorage-base.default:10491,vtstorage-base-1.vtstorage-base.default:10491"})
+			assert.Equal(t, cnt.Args, []string{"-http.shutdownDelay=29s", "-httpListenAddr=:10471", "-internalinsert.disable=true", "-storageNode=vtstorage-base-0.vtstorage-base.default:10491,vtstorage-base-1.vtstorage-base.default:10491"})
 			assert.Nil(t, dep.Annotations)
 			assert.Equal(t, dep.Labels, cr.FinalLabels(vmv1beta1.ClusterComponentSelect))
 
@@ -117,7 +117,7 @@ func TestCreateOrUpdate(t *testing.T) {
 			assert.Nil(t, rclient.Get(ctx, types.NamespacedName{Name: cr.PrefixedName(vmv1beta1.ClusterComponentStorage), Namespace: cr.Namespace}, &sts))
 			assert.Len(t, sts.Spec.Template.Spec.Containers, 1)
 			cnt = sts.Spec.Template.Spec.Containers[0]
-			assert.Equal(t, cnt.Args, []string{"-http.shutdownDelay=30s", "-httpListenAddr=:10491", "-storageDataPath=/vtstorage-data"})
+			assert.Equal(t, cnt.Args, []string{"-http.shutdownDelay=29s", "-httpListenAddr=:10491", "-storageDataPath=/vtstorage-data"})
 			assert.Nil(t, sts.Annotations)
 			assert.Equal(t, sts.Labels, cr.FinalLabels(vmv1beta1.ClusterComponentStorage))
 		},
@@ -135,7 +135,7 @@ func TestCreateOrUpdate(t *testing.T) {
 					RetentionPeriod:                 "1w",
 					RetentionMaxDiskSpaceUsageBytes: "5GB",
 					FutureRetention:                 "2d",
-					CommonApplicationDeploymentParams: vmv1beta1.CommonApplicationDeploymentParams{
+					CommonAppsParams: vmv1beta1.CommonAppsParams{
 						ReplicaCount: ptr.To(int32(1)),
 					},
 				},
@@ -147,7 +147,7 @@ func TestCreateOrUpdate(t *testing.T) {
 			assert.Nil(t, rclient.Get(ctx, types.NamespacedName{Name: cr.PrefixedName(vmv1beta1.ClusterComponentStorage), Namespace: cr.Namespace}, &sts))
 			assert.Len(t, sts.Spec.Template.Spec.Containers, 1)
 			cnt := sts.Spec.Template.Spec.Containers[0]
-			assert.Equal(t, cnt.Args, []string{"-futureRetention=2d", "-http.shutdownDelay=30s", "-httpListenAddr=:10491", "-retention.maxDiskSpaceUsageBytes=5GB", "-retentionPeriod=1w", "-storageDataPath=/vtstorage-data"})
+			assert.Equal(t, cnt.Args, []string{"-futureRetention=2d", "-http.shutdownDelay=29s", "-httpListenAddr=:10491", "-retention.maxDiskSpaceUsageBytes=5GB", "-retentionPeriod=1w", "-storageDataPath=/vtstorage-data"})
 		},
 	})
 
@@ -160,13 +160,13 @@ func TestCreateOrUpdate(t *testing.T) {
 			},
 			Spec: vmv1.VTClusterSpec{
 				Select: &vmv1.VTSelect{
-					CommonApplicationDeploymentParams: vmv1beta1.CommonApplicationDeploymentParams{
+					CommonAppsParams: vmv1beta1.CommonAppsParams{
 						ReplicaCount: ptr.To(int32(1)),
 					},
 				},
 				Storage: &vmv1.VTStorage{
 					RetentionPeriod: "1w",
-					CommonApplicationDeploymentParams: vmv1beta1.CommonApplicationDeploymentParams{
+					CommonAppsParams: vmv1beta1.CommonAppsParams{
 						ReplicaCount: ptr.To(int32(1)),
 					},
 					HPA: &vmv1beta1.EmbeddedHPA{
@@ -188,7 +188,7 @@ func TestCreateOrUpdate(t *testing.T) {
 			ObjectMeta: metav1.ObjectMeta{Name: "test", Namespace: "default"},
 			Spec: vmv1.VTClusterSpec{
 				Insert: &vmv1.VTInsert{
-					CommonApplicationDeploymentParams: vmv1beta1.CommonApplicationDeploymentParams{
+					CommonAppsParams: vmv1beta1.CommonAppsParams{
 						ReplicaCount: ptr.To(int32(0)),
 					},
 					VPA: &vmv1beta1.EmbeddedVPA{
@@ -245,7 +245,7 @@ func TestCreateOrUpdate(t *testing.T) {
 			ObjectMeta: metav1.ObjectMeta{Name: "test", Namespace: "default"},
 			Spec: vmv1.VTClusterSpec{
 				Select: &vmv1.VTSelect{
-					CommonApplicationDeploymentParams: vmv1beta1.CommonApplicationDeploymentParams{
+					CommonAppsParams: vmv1beta1.CommonAppsParams{
 						ReplicaCount: ptr.To(int32(0)),
 					},
 					VPA: &vmv1beta1.EmbeddedVPA{
@@ -313,7 +313,7 @@ func TestCreateOrUpdate(t *testing.T) {
 			ObjectMeta: metav1.ObjectMeta{Name: "test", Namespace: "default"},
 			Spec: vmv1.VTClusterSpec{
 				Storage: &vmv1.VTStorage{
-					CommonApplicationDeploymentParams: vmv1beta1.CommonApplicationDeploymentParams{
+					CommonAppsParams: vmv1beta1.CommonAppsParams{
 						ReplicaCount: ptr.To(int32(0)),
 					},
 					VPA: &vmv1beta1.EmbeddedVPA{
@@ -394,7 +394,7 @@ func TestCreateOrUpdate(t *testing.T) {
 			ObjectMeta: metav1.ObjectMeta{Name: "test", Namespace: "default"},
 			Spec: vmv1.VTClusterSpec{
 				Insert: &vmv1.VTInsert{
-					CommonApplicationDeploymentParams: vmv1beta1.CommonApplicationDeploymentParams{
+					CommonAppsParams: vmv1beta1.CommonAppsParams{
 						ReplicaCount: ptr.To(int32(0)),
 					},
 					VPA: &vmv1beta1.EmbeddedVPA{
@@ -487,7 +487,7 @@ func TestCreateOrUpdate(t *testing.T) {
 			},
 			Spec: vmv1.VTClusterSpec{
 				Insert: &vmv1.VTInsert{
-					CommonApplicationDeploymentParams: vmv1beta1.CommonApplicationDeploymentParams{
+					CommonAppsParams: vmv1beta1.CommonAppsParams{
 						ReplicaCount: ptr.To(int32(0)),
 					},
 				},

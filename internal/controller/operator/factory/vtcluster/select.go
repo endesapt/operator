@@ -212,7 +212,7 @@ func buildVTSelectDeployment(cr *vmv1.VTCluster) (*appsv1.Deployment, error) {
 			Template: *podSpec,
 		},
 	}
-	build.DeploymentAddCommonParams(depSpec, ptr.Deref(cr.Spec.Select.UseStrictSecurity, false), &cr.Spec.Select.CommonApplicationDeploymentParams)
+	build.DeploymentAddCommonParams(depSpec, &cr.Spec.Select.CommonAppsParams)
 	return depSpec, nil
 }
 
@@ -323,7 +323,7 @@ func buildVTSelectPodSpec(cr *vmv1.VTCluster) (*corev1.PodTemplateSpec, error) {
 	selectContainers = build.Probe(selectContainers, cr.Spec.Select)
 	operatorContainers := []corev1.Container{selectContainers}
 
-	build.AddStrictSecuritySettingsToContainers(cr.Spec.Select.SecurityContext, operatorContainers, ptr.Deref(cr.Spec.Select.UseStrictSecurity, false))
+	build.AddStrictSecuritySettingsToContainers(operatorContainers, &cr.Spec.Select.CommonAppsParams)
 	containers, err := k8stools.MergePatchContainers(operatorContainers, cr.Spec.Select.Containers)
 	if err != nil {
 		return nil, err

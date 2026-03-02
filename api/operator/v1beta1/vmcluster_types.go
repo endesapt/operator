@@ -317,8 +317,7 @@ type VMSelect struct {
 	// ClaimTemplates allows adding additional VolumeClaimTemplates for StatefulSet
 	ClaimTemplates []corev1.PersistentVolumeClaim `json:"claimTemplates,omitempty"`
 
-	CommonDefaultableParams           `json:",inline"`
-	CommonApplicationDeploymentParams `json:",inline"`
+	CommonAppsParams `json:",inline"`
 }
 
 type InsertPorts struct {
@@ -381,8 +380,7 @@ type VMInsert struct {
 	// +optional
 	VPA *EmbeddedVPA `json:"vpa,omitempty"`
 
-	CommonDefaultableParams           `json:",inline"`
-	CommonApplicationDeploymentParams `json:",inline"`
+	CommonAppsParams `json:",inline"`
 }
 
 func (cr *VMInsert) Probe() *EmbeddedProbes {
@@ -479,8 +477,7 @@ type VMStorage struct {
 	// ClaimTemplates allows adding additional VolumeClaimTemplates for StatefulSet
 	ClaimTemplates []corev1.PersistentVolumeClaim `json:"claimTemplates,omitempty"`
 
-	CommonDefaultableParams           `json:",inline"`
-	CommonApplicationDeploymentParams `json:",inline"`
+	CommonAppsParams `json:",inline"`
 }
 
 type VMBackup struct {
@@ -976,10 +973,9 @@ type VMAuthLoadBalancerSpec struct {
 	// LogLevel for vmauth container.
 	// +optional
 	// +kubebuilder:validation:Enum=INFO;WARN;ERROR;FATAL;PANIC
-	LogLevel                          string `json:"logLevel,omitempty"`
-	CommonApplicationDeploymentParams `json:",inline"`
-	CommonDefaultableParams           `json:",inline"`
-	*EmbeddedProbes                   `json:",inline"`
+	LogLevel         string `json:"logLevel,omitempty"`
+	CommonAppsParams `json:",inline"`
+	*EmbeddedProbes  `json:",inline"`
 	// PodDisruptionBudget created by operator
 	// +optional
 	PodDisruptionBudget *EmbeddedPodDisruptionBudgetSpec `json:"podDisruptionBudget,omitempty"`

@@ -137,7 +137,7 @@ schedulers:
 		cr: &vmv1.VMAnomaly{
 			ObjectMeta: objectMeta,
 			Spec: vmv1.VMAnomalySpec{
-				CommonApplicationDeploymentParams: vmv1beta1.CommonApplicationDeploymentParams{
+				CommonAppsParams: vmv1beta1.CommonAppsParams{
 					ReplicaCount: ptr.To(int32(1)),
 				},
 				RollingUpdateStrategy: appsv1.RollingUpdateStatefulSetStrategyType,

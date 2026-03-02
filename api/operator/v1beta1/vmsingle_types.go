@@ -91,11 +91,10 @@ type VMSingleSpec struct {
 	// +optional
 	ServiceAccountName string `json:"serviceAccountName,omitempty"`
 
-	CommonRelabelParams               `json:",inline,omitempty"`
-	CommonScrapeParams                `json:",inline,omitempty"`
-	CommonDefaultableParams           `json:",inline"`
-	CommonConfigReloaderParams        `json:",inline,omitempty"`
-	CommonApplicationDeploymentParams `json:",inline"`
+	CommonRelabelParams        `json:",inline,omitempty"`
+	CommonScrapeParams         `json:",inline,omitempty"`
+	CommonConfigReloaderParams `json:",inline,omitempty"`
+	CommonAppsParams           `json:",inline"`
 }
 
 // HasAnyStreamAggrRule checks if vmsingle has any defined aggregation rules

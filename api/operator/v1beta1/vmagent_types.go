@@ -115,11 +115,10 @@ type VMAgentSpec struct {
 	// +optional
 	ServiceAccountName string `json:"serviceAccountName,omitempty"`
 
-	CommonRelabelParams               `json:",inline,omitempty"`
-	CommonScrapeParams                `json:",inline,omitempty"`
-	CommonDefaultableParams           `json:",inline,omitempty"`
-	CommonConfigReloaderParams        `json:",inline,omitempty"`
-	CommonApplicationDeploymentParams `json:",inline,omitempty"`
+	CommonRelabelParams        `json:",inline,omitempty"`
+	CommonScrapeParams         `json:",inline,omitempty"`
+	CommonConfigReloaderParams `json:",inline,omitempty"`
+	CommonAppsParams           `json:",inline,omitempty"`
 }
 
 func (cr *VMAgent) Validate() error {

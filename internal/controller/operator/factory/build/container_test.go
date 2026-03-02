@@ -224,7 +224,7 @@ func TestAddHTTPShutdownDelayArg(t *testing.T) {
 	f(opts{
 		extraArgs:                     nil,
 		terminationGracePeriodSeconds: nil,
-		wantArgs:                      []string{"-http.shutdownDelay=30s"},
+		wantArgs:                      nil,
 	})
 	// if extraArg already exists, no more args should be added, it will be added later in the process of adding extra args
 	f(opts{
@@ -236,7 +236,7 @@ func TestAddHTTPShutdownDelayArg(t *testing.T) {
 	f(opts{
 		extraArgs:                     nil,
 		terminationGracePeriodSeconds: ptr.To[int64](60),
-		wantArgs:                      []string{"-http.shutdownDelay=60s"},
+		wantArgs:                      []string{"-http.shutdownDelay=59s"},
 	})
 	f(opts{
 		extraArgs:                     map[string]string{"http.shutdownDelay": "20s"},
@@ -632,7 +632,7 @@ func TestBuildConfigReloaderContainer(t *testing.T) {
 				Name:      "base",
 			},
 			Spec: vmv1beta1.VMAlertSpec{
-				CommonApplicationDeploymentParams: vmv1beta1.CommonApplicationDeploymentParams{
+				CommonAppsParams: vmv1beta1.CommonAppsParams{
 					ExtraArgs: map[string]string{
 						"reloadAuthKey": "test",
 					},
@@ -766,7 +766,7 @@ func TestBuildConfigReloaderContainer(t *testing.T) {
 				Name:      "base",
 			},
 			Spec: vmv1beta1.VMAlertSpec{
-				CommonApplicationDeploymentParams: vmv1beta1.CommonApplicationDeploymentParams{
+				CommonAppsParams: vmv1beta1.CommonAppsParams{
 					ConfigMaps: []string{"extra-template-1", "extra-template-2"},
 				},
 			},

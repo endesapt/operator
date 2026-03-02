@@ -105,9 +105,8 @@ type VMAnomalySpec struct {
 	License *vmv1beta1.License `json:"license,omitempty"`
 	// ServiceAccountName is the name of the ServiceAccount to use to run the pods
 	// +optional
-	ServiceAccountName                          string `json:"serviceAccountName,omitempty"`
-	vmv1beta1.CommonDefaultableParams           `json:",inline,omitempty"`
-	vmv1beta1.CommonApplicationDeploymentParams `json:",inline,omitempty"`
+	ServiceAccountName         string `json:"serviceAccountName,omitempty"`
+	vmv1beta1.CommonAppsParams `json:",inline,omitempty"`
 }
 
 // VMAnomalyWritersSpec defines writer configuration for VMAnomaly

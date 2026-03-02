@@ -114,9 +114,8 @@ type VMAuthSpec struct {
 	// +optional
 	ServiceAccountName string `json:"serviceAccountName,omitempty" yaml:"serviceAccountName,omitempty"`
 
-	CommonDefaultableParams           `json:",inline,omitempty" yaml:",inline"`
-	CommonConfigReloaderParams        `json:",inline,omitempty" yaml:",inline"`
-	CommonApplicationDeploymentParams `json:",inline,omitempty" yaml:",inline"`
+	CommonConfigReloaderParams `json:",inline,omitempty" yaml:",inline"`
+	CommonAppsParams           `json:",inline,omitempty" yaml:",inline"`
 	// InternalListenPort instructs vmauth to serve internal routes at given port
 	// available from v0.56.0 operator
 	// and v1.111.0 vmauth version

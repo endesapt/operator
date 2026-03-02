@@ -175,7 +175,7 @@ func newDeploy(cr *vmv1beta1.VMAlert, ruleConfigMapNames []string, ac *build.Ass
 		},
 		Spec: *generatedSpec,
 	}
-	build.DeploymentAddCommonParams(deploy, ptr.Deref(cr.Spec.UseStrictSecurity, false), &cr.Spec.CommonApplicationDeploymentParams)
+	build.DeploymentAddCommonParams(deploy, &cr.Spec.CommonAppsParams)
 	return deploy, nil
 }
 
@@ -307,9 +307,7 @@ func newPodSpec(cr *vmv1beta1.VMAlert, ruleConfigMapNames []string, ac *build.As
 		vmalertContainers = append(vmalertContainers, crc)
 	}
 
-	useStrictSecurity := ptr.Deref(cr.Spec.UseStrictSecurity, false)
-
-	build.AddStrictSecuritySettingsToContainers(cr.Spec.SecurityContext, vmalertContainers, useStrictSecurity)
+	build.AddStrictSecuritySettingsToContainers(vmalertContainers, &cr.Spec.CommonAppsParams)
 	containers, err := k8stools.MergePatchContainers(vmalertContainers, cr.Spec.Containers)
 	if err != nil {
 		return nil, err

@@ -111,7 +111,7 @@ func buildVLInsertDeployment(cr *vmv1.VLCluster) (*appsv1.Deployment, error) {
 			Template: *podSpec,
 		},
 	}
-	build.DeploymentAddCommonParams(stsSpec, ptr.Deref(cr.Spec.VLInsert.UseStrictSecurity, false), &cr.Spec.VLInsert.CommonApplicationDeploymentParams)
+	build.DeploymentAddCommonParams(stsSpec, &cr.Spec.VLInsert.CommonAppsParams)
 	return stsSpec, nil
 }
 
@@ -226,7 +226,7 @@ func buildVLInsertPodSpec(cr *vmv1.VLCluster) (*corev1.PodTemplateSpec, error) {
 	insertContainers = build.Probe(insertContainers, cr.Spec.VLInsert)
 	operatorContainers := []corev1.Container{insertContainers}
 
-	build.AddStrictSecuritySettingsToContainers(cr.Spec.VLInsert.SecurityContext, operatorContainers, ptr.Deref(cr.Spec.VLInsert.UseStrictSecurity, false))
+	build.AddStrictSecuritySettingsToContainers(operatorContainers, &cr.Spec.VLInsert.CommonAppsParams)
 	containers, err := k8stools.MergePatchContainers(operatorContainers, cr.Spec.VLInsert.Containers)
 	if err != nil {
 		return nil, err

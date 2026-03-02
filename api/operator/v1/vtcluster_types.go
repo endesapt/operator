@@ -251,8 +251,7 @@ type VTInsert struct {
 	// +optional
 	RollingUpdate *appsv1.RollingUpdateDeployment `json:"rollingUpdate,omitempty"`
 
-	vmv1beta1.CommonDefaultableParams           `json:",inline"`
-	vmv1beta1.CommonApplicationDeploymentParams `json:",inline"`
+	vmv1beta1.CommonAppsParams `json:",inline"`
 }
 
 // Probe implements build.probeCRD interface
@@ -351,8 +350,7 @@ type VTSelect struct {
 	// ExtraStorageNodes - defines additional storage nodes to VTSelect
 	ExtraStorageNodes []VTStorageNode `json:"extraStorageNodes,omitempty"`
 
-	vmv1beta1.CommonDefaultableParams           `json:",inline"`
-	vmv1beta1.CommonApplicationDeploymentParams `json:",inline"`
+	vmv1beta1.CommonAppsParams `json:",inline"`
 }
 
 // GetMetricsPath returns prefixed path for metric requests
@@ -487,8 +485,7 @@ type VTStorage struct {
 	// +optional
 	MaintenanceSelectNodeIDs []int32 `json:"maintenanceSelectNodeIDs,omitempty"`
 
-	vmv1beta1.CommonDefaultableParams           `json:",inline"`
-	vmv1beta1.CommonApplicationDeploymentParams `json:",inline"`
+	vmv1beta1.CommonAppsParams `json:",inline"`
 
 	// RollingUpdateStrategyBehavior defines customized behavior for rolling updates.
 	// It applies if the RollingUpdateStrategy is set to OnDelete, which is the default.

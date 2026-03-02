@@ -1053,38 +1053,6 @@ func (s *StatefulSetUpdateStrategyBehavior) Validate() error {
 	return nil
 }
 
-// CommonDefaultableParams contains Application settings
-// with known values populated from operator configuration
-type CommonDefaultableParams struct {
-	// Image - docker image settings
-	// if no specified operator uses default version from operator config
-	// +optional
-	Image Image `json:"image,omitempty"`
-	// Resources container resource request and limits, https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
-	// if not defined default resources from operator config will be used
-	// +operator-sdk:csv:customresourcedefinitions:type=spec,displayName="Resources",xDescriptors="urn:alm:descriptor:com.tectonic.ui:resourceRequirements"
-	// +optional
-	Resources corev1.ResourceRequirements `json:"resources,omitempty"`
-	// UseDefaultResources controls resource settings
-	// By default, operator sets built-in resource requirements
-	// +optional
-	UseDefaultResources *bool `json:"useDefaultResources,omitempty"`
-	// Port listen address
-	// +optional
-	Port string `json:"port,omitempty"`
-	// UseStrictSecurity enables strict security mode for component
-	// it restricts disk writes access
-	// uses non-root user out of the box
-	// drops not needed security permissions
-	// +optional
-	UseStrictSecurity *bool `json:"useStrictSecurity,omitempty"`
-	// DisableSelfServiceScrape controls creation of VMServiceScrape by operator
-	// for the application.
-	// Has priority over `VM_DISABLESELFSERVICESCRAPECREATION` operator env variable
-	// +optional
-	DisableSelfServiceScrape *bool `json:"disableSelfServiceScrape,omitempty"`
-}
-
 type CommonConfigReloaderParams struct {
 	// UseVMConfigReloader replaces prometheus-like config-reloader
 	// with vm one. It uses secrets watch instead of file watch
@@ -1115,9 +1083,9 @@ type CommonConfigReloaderParams struct {
 	ConfigReloadAuthKeySecret *corev1.SecretKeySelector `json:"configReloadAuthKeySecret,omitempty"`
 }
 
-// CommonApplicationDeploymentParams defines common params
+// CommonAppsParams defines common params
 // for deployment and statefulset specifications
-type CommonApplicationDeploymentParams struct {
+type CommonAppsParams struct {
 	// Affinity If specified, the pod's scheduling constraints.
 	// +optional
 	Affinity *corev1.Affinity `json:"affinity,omitempty"`
@@ -1174,9 +1142,6 @@ type CommonApplicationDeploymentParams struct {
 	// see https://kubernetes.io/docs/concepts/containers/images/#referring-to-an-imagepullsecrets-on-a-pod
 	// +optional
 	ImagePullSecrets []corev1.LocalObjectReference `json:"imagePullSecrets,omitempty"`
-	// TerminationGracePeriodSeconds period for container graceful termination
-	// +optional
-	TerminationGracePeriodSeconds *int64 `json:"terminationGracePeriodSeconds,omitempty"`
 	// ReadinessGates defines pod readiness gates
 	ReadinessGates []corev1.PodReadinessGate `json:"readinessGates,omitempty"`
 	// MinReadySeconds defines a minimum number of seconds to wait before starting update next pod
@@ -1245,6 +1210,37 @@ type CommonApplicationDeploymentParams struct {
 	// could either be secret or configmap
 	// +optional
 	ExtraEnvsFrom []corev1.EnvFromSource `json:"extraEnvsFrom,omitempty"`
+
+	// Image - docker image settings
+	// if no specified operator uses default version from operator config
+	// +optional
+	Image Image `json:"image,omitempty"`
+	// Resources container resource request and limits, https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+	// if not defined default resources from operator config will be used
+	// +operator-sdk:csv:customresourcedefinitions:type=spec,displayName="Resources",xDescriptors="urn:alm:descriptor:com.tectonic.ui:resourceRequirements"
+	// +optional
+	Resources corev1.ResourceRequirements `json:"resources,omitempty"`
+	// UseDefaultResources controls resource settings
+	// By default, operator sets built-in resource requirements
+	// +optional
+	UseDefaultResources *bool `json:"useDefaultResources,omitempty"`
+	// Port listen address
+	// +optional
+	Port string `json:"port,omitempty"`
+	// UseStrictSecurity enables strict security mode for component
+	// it restricts disk writes access
+	// uses non-root user out of the box
+	// drops not needed security permissions
+	// +optional
+	UseStrictSecurity *bool `json:"useStrictSecurity,omitempty"`
+	// DisableSelfServiceScrape controls creation of VMServiceScrape by operator
+	// for the application.
+	// Has priority over `VM_DISABLESELFSERVICESCRAPECREATION` operator env variable
+	// +optional
+	DisableSelfServiceScrape *bool `json:"disableSelfServiceScrape,omitempty"`
+	// TerminationGracePeriodSeconds period for container graceful termination
+	// +optional
+	TerminationGracePeriodSeconds *int64 `json:"terminationGracePeriodSeconds,omitempty"`
 }
 
 // SecurityContext extends PodSecurityContext with ContainerSecurityContext

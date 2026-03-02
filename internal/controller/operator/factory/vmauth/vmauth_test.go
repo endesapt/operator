@@ -64,7 +64,7 @@ func TestCreateOrUpdate(t *testing.T) {
 				Namespace: "default",
 			},
 			Spec: vmv1beta1.VMAuthSpec{
-				CommonDefaultableParams: vmv1beta1.CommonDefaultableParams{
+				CommonAppsParams: vmv1beta1.CommonAppsParams{
 					Port: "8427",
 				},
 				HTTPRoute: &vmv1beta1.EmbeddedHTTPRoute{
@@ -100,13 +100,13 @@ func TestCreateOrUpdate(t *testing.T) {
 				Namespace: "default",
 			},
 			Spec: vmv1beta1.VMAuthSpec{
-				CommonDefaultableParams: vmv1beta1.CommonDefaultableParams{
+				CommonAppsParams: vmv1beta1.CommonAppsParams{
 					Port: "8427",
 				},
 			},
 			Status: vmv1beta1.VMAuthStatus{
 				LastAppliedSpec: &vmv1beta1.VMAuthSpec{
-					CommonDefaultableParams: vmv1beta1.CommonDefaultableParams{
+					CommonAppsParams: vmv1beta1.CommonAppsParams{
 						Port: "8427",
 					},
 					HTTPRoute: &vmv1beta1.EmbeddedHTTPRoute{
@@ -435,7 +435,7 @@ func TestMakeSpecForAuthOk(t *testing.T) {
 	f(&vmv1beta1.VMAuth{
 		ObjectMeta: metav1.ObjectMeta{Name: "auth", Namespace: "default"},
 		Spec: vmv1beta1.VMAuthSpec{
-			CommonDefaultableParams: vmv1beta1.CommonDefaultableParams{
+			CommonAppsParams: vmv1beta1.CommonAppsParams{
 				UseDefaultResources: ptr.To(false),
 				Image: vmv1beta1.Image{
 					Repository: "vm-repo",
@@ -471,7 +471,7 @@ containers:
     imagepullpolicy: IfNotPresent
     args:
       - -auth.config=/opt/vmauth/config.yaml
-      - -http.shutdownDelay=30s
+      - -http.shutdownDelay=29s
       - -httpListenAddr=:8429
     ports:
       - name: http
@@ -550,7 +550,7 @@ serviceaccountname: vmauth-auth
 	f(&vmv1beta1.VMAuth{
 		ObjectMeta: metav1.ObjectMeta{Name: "auth", Namespace: "default"},
 		Spec: vmv1beta1.VMAuthSpec{
-			CommonDefaultableParams: vmv1beta1.CommonDefaultableParams{
+			CommonAppsParams: vmv1beta1.CommonAppsParams{
 				UseDefaultResources: ptr.To(false),
 				Image: vmv1beta1.Image{
 					Repository: "vm-repo",
@@ -583,7 +583,7 @@ containers:
     imagepullpolicy: IfNotPresent
     args:
       - -auth.config=/opt/vmauth/config.yaml
-      - -http.shutdownDelay=30s
+      - -http.shutdownDelay=29s
       - -httpListenAddr=:8429
     ports:
       - name: http
@@ -680,7 +680,7 @@ func TestBuildIngressForAuthOk(t *testing.T) {
 	f(&vmv1beta1.VMAuth{
 		ObjectMeta: metav1.ObjectMeta{Name: "auth", Namespace: "default"},
 		Spec: vmv1beta1.VMAuthSpec{
-			CommonDefaultableParams: vmv1beta1.CommonDefaultableParams{
+			CommonAppsParams: vmv1beta1.CommonAppsParams{
 				UseDefaultResources: ptr.To(false),
 				Image: vmv1beta1.Image{
 					Repository: "vm-repo",
@@ -711,7 +711,7 @@ rules:
 	f(&vmv1beta1.VMAuth{
 		ObjectMeta: metav1.ObjectMeta{Name: "auth", Namespace: "default"},
 		Spec: vmv1beta1.VMAuthSpec{
-			CommonDefaultableParams: vmv1beta1.CommonDefaultableParams{
+			CommonAppsParams: vmv1beta1.CommonAppsParams{
 				UseDefaultResources: ptr.To(false),
 				Image: vmv1beta1.Image{
 					Repository: "vm-repo",

@@ -157,7 +157,7 @@ func newDeploy(ctx context.Context, cr *vmv1beta1.VMSingle) (*appsv1.Deployment,
 			Template: *podSpec,
 		},
 	}
-	build.DeploymentAddCommonParams(depSpec, ptr.Deref(cr.Spec.UseStrictSecurity, false), &cr.Spec.CommonApplicationDeploymentParams)
+	build.DeploymentAddCommonParams(depSpec, &cr.Spec.CommonAppsParams)
 	return depSpec, nil
 }
 
@@ -346,7 +346,6 @@ func newPodSpec(ctx context.Context, cr *vmv1beta1.VMSingle) (*corev1.PodTemplat
 	}
 
 	vmsingleContainer = build.Probe(vmsingleContainer, cr)
-	useStrictSecurity := ptr.Deref(cr.Spec.UseStrictSecurity, false)
 
 	containers := []corev1.Container{vmsingleContainer}
 	var ic []corev1.Container
@@ -362,7 +361,7 @@ func newPodSpec(ctx context.Context, cr *vmv1beta1.VMSingle) (*corev1.PodTemplat
 		containers = append(containers, configReloader)
 		if !ptr.Deref(cr.Spec.IngestOnlyMode, false) {
 			ic = append(ic, build.ConfigReloaderContainer(true, cr, crMounts, ss))
-			build.AddStrictSecuritySettingsToContainers(cr.Spec.SecurityContext, ic, useStrictSecurity)
+			build.AddStrictSecuritySettingsToContainers(ic, &cr.Spec.CommonAppsParams)
 		}
 	}
 
@@ -387,13 +386,13 @@ func newPodSpec(ctx context.Context, cr *vmv1beta1.VMSingle) (*corev1.PodTemplat
 		}
 	}
 
-	build.AddStrictSecuritySettingsToContainers(cr.Spec.SecurityContext, ic, useStrictSecurity)
+	build.AddStrictSecuritySettingsToContainers(ic, &cr.Spec.CommonAppsParams)
 	ic, err = k8stools.MergePatchContainers(ic, cr.Spec.InitContainers)
 	if err != nil {
 		return nil, fmt.Errorf("cannot apply initContainer patch: %w", err)
 	}
 
-	build.AddStrictSecuritySettingsToContainers(cr.Spec.SecurityContext, containers, useStrictSecurity)
+	build.AddStrictSecuritySettingsToContainers(containers, &cr.Spec.CommonAppsParams)
 	containers, err = k8stools.MergePatchContainers(containers, cr.Spec.Containers)
 	if err != nil {
 		return nil, err
